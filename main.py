@@ -1,7 +1,7 @@
-import math
 import pygame
 from sys import exit
 from random import randint, choice
+import math
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -86,7 +86,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
         self.obstacle_animation() 
-        self.rect.x -= 6 + (0.01 * score)
+        self.rect.x -= 6 + (0.02 * score)
         self.destroy()
             
     def destroy(self):
@@ -134,15 +134,15 @@ ground_surf = pygame.image.load('graphics/grass.jpeg').convert()
 ground_surf = pygame.transform.scale(ground_surf, (800, 100))
 
 #inital screen
-player_stand = pygame.image.load('graphics/girl.gif').convert_alpha()
-player_stand = pygame.transform.scale(player_stand, (200,200))
+player_stand = pygame.image.load('graphics/jump.png').convert_alpha()
+player_stand = pygame.transform.scale(player_stand, (180,200))
 player_stand_rect = player_stand.get_rect(center = (400,200))
 
-game_name = test_font.render('running girl', False, '#e5a2bd')
-game_name_rect = game_name.get_rect(center = (400, 80))
+game_name = test_font.render('runner girl', False, 'White')
+game_name_rect = game_name.get_rect(center = (400, 70))
 
-game_message = test_font.render('Press space to run', False, (111,196,169))
-game_message_rect = game_message.get_rect(center = (400,340))
+game_message = test_font.render('Press space to run', False, 'White')
+game_message_rect = game_message.get_rect(center = (400, 350))
 
 #timer
 obstacle_timer = pygame.USEREVENT + 1
@@ -150,6 +150,7 @@ pygame.time.set_timer(obstacle_timer, 1500)
 
 scroll=0
 tiles = math.ceil(800 / sky_surf.get_width()) + 1
+
 #event handler
 while True:
     for event in pygame.event.get():
@@ -166,11 +167,13 @@ while True:
 
     #display
     if game_active:
-        i=0
+
+        #moving sky
+        i = 0
         while (i<tiles):
-            screen.blit(sky_surf, (sky_surf.get_width()*i + scroll, 0))
-            i+=1
-        scroll -= 6
+            screen.blit(sky_surf, (sky_surf.get_width() * i + scroll, 0))
+            i += 1
+        scroll -= 3
         if abs(scroll) > sky_surf.get_width():
             scroll = 0
     
@@ -186,7 +189,10 @@ while True:
         game_active = collision_sprite()
         
     else: #menu screen
-        screen.fill((94, 129, 162))
+        #screen.fill('#49478A')
+        bg = pygame.image.load('graphics/skyy.jpeg')
+        bg = pygame.transform.scale(bg, (800,400))
+        screen.blit(bg, (0,0))
         screen.blit(player_stand, player_stand_rect)
 
         score_msg = test_font.render(f'Your score: {score}', False, '#e5a2bd')
