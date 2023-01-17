@@ -125,6 +125,7 @@ player.add(Player())
 obstacle_group = pygame.sprite.Group()
 
 #background:
+
 sky_surf = pygame.image.load('graphics/sky1.jpeg').convert()
 sky_surf = pygame.transform.scale(sky_surf, (800, 500))
 
