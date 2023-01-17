@@ -1,3 +1,4 @@
+import math
 import pygame
 from sys import exit
 from random import randint, choice
@@ -115,7 +116,7 @@ game_active = False
 start_time = 0
 score = 0
 bg_music = pygame.mixer.Sound('audio/first date.mp3')
-bg_music.set_volume(0.5)
+bg_music.set_volume(0.1)
 bg_music.play(loops = -1)
 
 #groups
@@ -146,6 +147,8 @@ game_message_rect = game_message.get_rect(center = (400,340))
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer, 1500)
 
+scroll=0
+tiles = math.ceil(800 / sky_surf.get_width()) + 1
 #event handler
 while True:
     for event in pygame.event.get():
@@ -162,8 +165,14 @@ while True:
 
     #display
     if game_active:
-
-        screen.blit(sky_surf, (0, 0))
+        i=0
+        while (i<tiles):
+            screen.blit(sky_surf, (sky_surf.get_width()*i + scroll, 0))
+            i+=1
+        scroll -= 6
+        if abs(scroll) > sky_surf.get_width():
+            scroll = 0
+    
         screen.blit(ground_surf, (0, 300))
         score = display_score()
 
@@ -174,7 +183,7 @@ while True:
         obstacle_group.update()
 
         game_active = collision_sprite()
-            
+        
     else: #menu screen
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)
